@@ -5,7 +5,12 @@ import { getDatabase } from "@backend/infrastructure/persistence/drizzle/client"
 import { getRedis } from "@backend/infrastructure/cache/redis";
 import { InMemoryCacheStore } from "@backend/infrastructure/cache/InMemoryCacheStore";
 import { RedisCacheStore } from "@backend/infrastructure/cache/RedisCacheStore";
-import { GetMetricTrends, GetCorrelations } from "@backend/modules/analytics";
+import {
+  GetMetricTrends,
+  GetCorrelations,
+  GetDayOfWeekStats,
+  GetMetricHeatmap,
+} from "@backend/modules/analytics";
 
 import {
   EnsureCurrentUser,
@@ -92,6 +97,8 @@ export interface AppContainer {
     readonly recalculateStreak: RecalculateStreak;
     readonly getMetricTrends: GetMetricTrends;
     readonly getCorrelations: GetCorrelations;
+    readonly getDayOfWeekStats: GetDayOfWeekStats;
+    readonly getMetricHeatmap: GetMetricHeatmap;
     readonly createTask: CreateTask;
     readonly listTasks: ListTasks;
     readonly listTodayTasks: ListTodayTasks;
@@ -188,6 +195,8 @@ function build(): AppContainer {
       recalculateStreak,
       getMetricTrends: new GetMetricTrends(metrics, entries),
       getCorrelations: new GetCorrelations(metrics, entries, cache),
+      getDayOfWeekStats: new GetDayOfWeekStats(metrics, entries),
+      getMetricHeatmap: new GetMetricHeatmap(metrics, entries),
       createTask: new CreateTask(taskRepo),
       listTasks: new ListTasks(taskRepo),
       listTodayTasks: new ListTodayTasks(taskRepo),

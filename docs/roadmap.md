@@ -32,7 +32,8 @@
   `Day`, `Category`, `MetricStreak`. Use cases: DefineMetric, LogEntry, GetDailyOverview,
   SeedStarterMetrics, CreateCategory, ListMetrics, ArchiveMetric, RecalculateStreak.
 - **Analytics**: `MovingAverage` (SMA/EMA), `Correlation` (Пірсон); GetMetricTrends,
-  GetCorrelations (Redis-кеш через `ICacheStore` з версійною інвалідацією).
+  GetCorrelations (Redis-кеш через `ICacheStore` з версійною інвалідацією),
+  GetDayOfWeekStats, GetMetricHeatmap.
 - **Tasks**: `Task` (+`Priority`); CreateTask, ListTasks, **ListTodayTasks** (overdue + due today),
   SetTaskCompletion.
 - **Journal**: `JournalEntry` (one-per-day, Markdown); UpsertJournalEntry, GetJournalEntry, ListJournal.
@@ -42,9 +43,10 @@
 - Екрани: `/today` (дашборд доби — прогрес-хедер, mood hero, журнал дня, метрики, задачі),
   `/tasks`, `/journal` (Markdown-щоденник з autosave + історія), `/goals` (дерево цілей + Grid of Life
   + перемикач рівня), `/onboarding` (форма birthDate), `/trackers` (CRUD метрик+категорії, архів),
-  `/insights` (кореляції + тренди-спарклайни). Навігація — `widgets/app-shell`.
+  `/insights` (перемикач періоду 7/30/90 через `?days=`, кореляції, тренди (recharts LineChart),
+  розбивка по днях тижня (recharts BarChart), heatmap топ-метрики). Навігація — `widgets/app-shell`.
 
-**Якість**: typecheck ✓ · 46 unit-тестів (Vitest) ✓ · lint ✓ · `next build` ✓ ·
+**Якість**: typecheck ✓ · 49 unit-тестів (Vitest) ✓ · lint ✓ · `next build` ✓ ·
 9 таблиць, міграції `drizzle/0000..0004`.
 
 **Команди**: `npm run dev | test | typecheck | lint | build | db:generate | db:migrate | db:seed`
@@ -86,12 +88,15 @@
 - Онбординг: окрема сторінка `/onboarding` — якщо `birthDate` уже задана, редирект на `/today`;
   інакше форма-дата → редирект.
 
-### 4. Покращення **Insights** (S–M)
-- Перемикач періоду 7/30/90 (клієнтський компонент → викликає `getInsights(days)`),
-  зараз зашито 30.
-- Замінити SVG-спарклайни на **recharts** (LineChart з 3 лініями mood/energy/productivity).
-- Аналітика день-тижня («найкраще в суботу»), heatmap звичок (GitHub-стиль).
-- Нові use cases в `analytics` за тим самим патерном (читають `entries.date`).
+### ✅ ~~4. Покращення Insights~~ — зроблено
+- Перемикач 7/30/90 — `features/view-insights/ui/PeriodSwitcher` (client), стан в `?days=`,
+  view залишається серверним.
+- `recharts` LineChart для трендів (топ-4 метрик за середнім), BarChart для day-of-week.
+- Нові use cases `GetDayOfWeekStats` і `GetMetricHeatmap` у `analytics` поверх існуючого
+  `IEntryRepository.listByUserInRange` + `DayDate.dayOfWeek()`; `GetCorrelations` уже мав
+  `days` у ключі кешу.
+- Widgets: `trends-chart`, `dow-stats`, `metric-heatmap` (GitHub-стиль через CSS grid,
+  без recharts). Стара `InsightsBoard` тепер показує лише кореляції.
 
 ### 5. **Clerk** (фінальний крок авторизації) (M)
 - Встановити `@clerk/nextjs`, `ClerkProvider` у `app/layout.tsx`, middleware.
