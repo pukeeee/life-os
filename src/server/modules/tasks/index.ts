@@ -11,6 +11,8 @@ export { CreateTask } from "./application/use-cases/CreateTask";
 export type { CreateTaskRequest, CreateTaskResponse } from "./application/use-cases/CreateTask";
 export { ListTasks } from "./application/use-cases/ListTasks";
 export type { ListTasksRequest } from "./application/use-cases/ListTasks";
+export { ListTodayTasks } from "./application/use-cases/ListTodayTasks";
+export type { ListTodayTasksRequest } from "./application/use-cases/ListTodayTasks";
 export { SetTaskCompletion, TaskNotFoundError } from "./application/use-cases/SetTaskCompletion";
 export type { SetTaskCompletionRequest } from "./application/use-cases/SetTaskCompletion";
 export type { TaskDTO } from "./application/dto/TaskDTO";

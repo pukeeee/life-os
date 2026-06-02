@@ -46,6 +46,7 @@ import {
 import {
   CreateTask,
   ListTasks,
+  ListTodayTasks,
   SetTaskCompletion,
   InMemoryTaskRepository,
   DrizzleTaskRepository,
@@ -73,6 +74,7 @@ export interface AppContainer {
     readonly getCorrelations: GetCorrelations;
     readonly createTask: CreateTask;
     readonly listTasks: ListTasks;
+    readonly listTodayTasks: ListTodayTasks;
     readonly setTaskCompletion: SetTaskCompletion;
   };
 }
@@ -154,6 +156,7 @@ function build(): AppContainer {
       getCorrelations: new GetCorrelations(metrics, entries, cache),
       createTask: new CreateTask(taskRepo),
       listTasks: new ListTasks(taskRepo),
+      listTodayTasks: new ListTodayTasks(taskRepo),
       setTaskCompletion: new SetTaskCompletion(taskRepo),
     },
   };
