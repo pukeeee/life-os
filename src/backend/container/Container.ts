@@ -1,0 +1,225 @@
+import { DomainEvents } from "@backend/shared/kernel";
+import type { ICacheStore } from "@backend/shared/ports/ICacheStore";
+import { getEnv, type Env } from "@backend/infrastructure/config/env";
+import { getDatabase } from "@backend/infrastructure/persistence/drizzle/client";
+import { getRedis } from "@backend/infrastructure/cache/redis";
+import { InMemoryCacheStore } from "@backend/infrastructure/cache/InMemoryCacheStore";
+import { RedisCacheStore } from "@backend/infrastructure/cache/RedisCacheStore";
+import {
+  GetMetricTrends,
+  GetCorrelations,
+  GetDayOfWeekStats,
+  GetMetricHeatmap,
+} from "@backend/modules/analytics";
+
+import {
+  EnsureCurrentUser,
+  SetUserBirthDate,
+  DevCurrentUserProvider,
+  InMemoryUserRepository,
+  DrizzleUserRepository,
+  type IUserRepository,
+} from "@backend/modules/identity";
+
+import {
+  CreateGoal,
+  ListGoalsTree,
+  UpdateGoalProgress,
+  ArchiveGoal,
+  InMemoryGoalRepository,
+  DrizzleGoalRepository,
+  type IGoalRepository,
+} from "@backend/modules/goals";
+
+import {
+  DefineMetric,
+  LogEntry,
+  GetDailyOverview,
+  SeedStarterMetrics,
+  CreateCategory,
+  ListMetrics,
+  ArchiveMetric,
+  RecalculateStreak,
+  MetricLogged,
+  DayService,
+  InMemoryMetricDefinitionRepository,
+  InMemoryEntryRepository,
+  InMemoryDayRepository,
+  InMemoryCategoryRepository,
+  InMemoryStreakRepository,
+  DrizzleMetricDefinitionRepository,
+  DrizzleEntryRepository,
+  DrizzleDayRepository,
+  DrizzleCategoryRepository,
+  DrizzleStreakRepository,
+  type IMetricDefinitionRepository,
+  type IEntryRepository,
+  type IDayRepository,
+  type ICategoryRepository,
+  type IStreakRepository,
+} from "@backend/modules/tracking";
+
+import {
+  CreateTask,
+  ListTasks,
+  ListTodayTasks,
+  SetTaskCompletion,
+  InMemoryTaskRepository,
+  DrizzleTaskRepository,
+  type ITaskRepository,
+} from "@backend/modules/tasks";
+
+import {
+  UpsertJournalEntry,
+  GetJournalEntry,
+  ListJournal,
+  InMemoryJournalRepository,
+  DrizzleJournalRepository,
+  type IJournalRepository,
+} from "@backend/modules/journal";
+
+/**
+ * Публічний контракт зібраного застосунку: лише use cases + конфіг.
+ * Зовнішні шари (Server Actions) працюють виключно через ці сценарії — і ніколи
+ * напряму з репозиторіями чи доменом.
+ */
+export interface AppContainer {
+  readonly env: Env;
+  readonly useCases: {
+    readonly ensureCurrentUser: EnsureCurrentUser;
+    readonly defineMetric: DefineMetric;
+    readonly logEntry: LogEntry;
+    readonly getDailyOverview: GetDailyOverview;
+    readonly seedStarterMetrics: SeedStarterMetrics;
+    readonly createCategory: CreateCategory;
+    readonly listMetrics: ListMetrics;
+    readonly archiveMetric: ArchiveMetric;
+    readonly recalculateStreak: RecalculateStreak;
+    readonly getMetricTrends: GetMetricTrends;
+    readonly getCorrelations: GetCorrelations;
+    readonly getDayOfWeekStats: GetDayOfWeekStats;
+    readonly getMetricHeatmap: GetMetricHeatmap;
+    readonly createTask: CreateTask;
+    readonly listTasks: ListTasks;
+    readonly listTodayTasks: ListTodayTasks;
+    readonly setTaskCompletion: SetTaskCompletion;
+    readonly upsertJournalEntry: UpsertJournalEntry;
+    readonly getJournalEntry: GetJournalEntry;
+    readonly listJournal: ListJournal;
+    readonly setUserBirthDate: SetUserBirthDate;
+    readonly createGoal: CreateGoal;
+    readonly listGoalsTree: ListGoalsTree;
+    readonly updateGoalProgress: UpdateGoalProgress;
+    readonly archiveGoal: ArchiveGoal;
+  };
+}
+
+/**
+ * Composition Root — ЄДИНЕ місце, де абстракції зʼєднуються з реалізаціями.
+ * Тут (і лише тут) приймається рішення memory vs postgres за конфігом.
+ * Зміна сховища = зміна env, без правок у домені/застосунку.
+ */
+function build(): AppContainer {
+  const env = getEnv();
+
+  let users: IUserRepository;
+  let metrics: IMetricDefinitionRepository;
+  let entries: IEntryRepository;
+  let days: IDayRepository;
+  let categories: ICategoryRepository;
+  let streaks: IStreakRepository;
+  let taskRepo: ITaskRepository;
+  let journalRepo: IJournalRepository;
+  let goalRepo: IGoalRepository;
+
+  if (env.PERSISTENCE === "postgres") {
+    const db = getDatabase(env.DATABASE_URL as string);
+    users = new DrizzleUserRepository(db);
+    metrics = new DrizzleMetricDefinitionRepository(db);
+    entries = new DrizzleEntryRepository(db);
+    days = new DrizzleDayRepository(db);
+    categories = new DrizzleCategoryRepository(db);
+    streaks = new DrizzleStreakRepository(db);
+    taskRepo = new DrizzleTaskRepository(db);
+    journalRepo = new DrizzleJournalRepository(db);
+    goalRepo = new DrizzleGoalRepository(db);
+  } else {
+    // Дефолт: усе в памʼяті — застосунок працює без БД та зовнішніх сервісів.
+    users = new InMemoryUserRepository();
+    metrics = new InMemoryMetricDefinitionRepository();
+    entries = new InMemoryEntryRepository();
+    days = new InMemoryDayRepository();
+    categories = new InMemoryCategoryRepository();
+    streaks = new InMemoryStreakRepository();
+    taskRepo = new InMemoryTaskRepository();
+    journalRepo = new InMemoryJournalRepository();
+    goalRepo = new InMemoryGoalRepository();
+  }
+
+  // Кеш: Redis у self-hosted режимі, інакше in-memory.
+  const cache: ICacheStore =
+    env.PERSISTENCE === "postgres" && env.REDIS_URL
+      ? new RedisCacheStore(getRedis(env.REDIS_URL))
+      : new InMemoryCacheStore();
+
+  const currentUserProvider = new DevCurrentUserProvider({
+    email: env.DEV_USER_EMAIL,
+    displayName: env.DEV_USER_NAME,
+    timezone: env.DEV_USER_TIMEZONE,
+  });
+
+  const dayService = new DayService(days);
+  const defineMetric = new DefineMetric(metrics);
+  const recalculateStreak = new RecalculateStreak(metrics, entries, streaks);
+
+  // EDD: при кожному залогованому значенні (1) перераховуємо стрік метрики,
+  // (2) інвалідуємо кеш інсайтів користувача (bump версії). Домен трекінгу не
+  // знає про ці сайд-ефекти — звʼязок лише через подію.
+  DomainEvents.register((event) => {
+    const entry = (event as MetricLogged).entry;
+    void recalculateStreak.execute({ metricId: entry.metricId.toString() });
+    void cache.incr(GetCorrelations.versionKey(entry.userId.toString()));
+  }, MetricLogged.name);
+
+  return {
+    env,
+    useCases: {
+      ensureCurrentUser: new EnsureCurrentUser(users, currentUserProvider),
+      defineMetric,
+      logEntry: new LogEntry(metrics, entries, dayService),
+      getDailyOverview: new GetDailyOverview(metrics, entries, days, streaks),
+      seedStarterMetrics: new SeedStarterMetrics(metrics, defineMetric),
+      createCategory: new CreateCategory(categories),
+      listMetrics: new ListMetrics(metrics, categories, streaks),
+      archiveMetric: new ArchiveMetric(metrics),
+      recalculateStreak,
+      getMetricTrends: new GetMetricTrends(metrics, entries),
+      getCorrelations: new GetCorrelations(metrics, entries, cache),
+      getDayOfWeekStats: new GetDayOfWeekStats(metrics, entries),
+      getMetricHeatmap: new GetMetricHeatmap(metrics, entries),
+      createTask: new CreateTask(taskRepo),
+      listTasks: new ListTasks(taskRepo),
+      listTodayTasks: new ListTodayTasks(taskRepo),
+      setTaskCompletion: new SetTaskCompletion(taskRepo),
+      upsertJournalEntry: new UpsertJournalEntry(journalRepo),
+      getJournalEntry: new GetJournalEntry(journalRepo),
+      listJournal: new ListJournal(journalRepo),
+      setUserBirthDate: new SetUserBirthDate(users),
+      createGoal: new CreateGoal(goalRepo),
+      listGoalsTree: new ListGoalsTree(goalRepo),
+      updateGoalProgress: new UpdateGoalProgress(goalRepo),
+      archiveGoal: new ArchiveGoal(goalRepo),
+    },
+  };
+}
+
+let instance: AppContainer | null = null;
+
+/**
+ * Singleton-доступ до контейнера. У memory-режимі це також забезпечує
+ * збереження стану між запитами в межах процесу розробки.
+ */
+export function getContainer(): AppContainer {
+  instance ??= build();
+  return instance;
+}
