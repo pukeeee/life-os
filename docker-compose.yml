@@ -1,0 +1,41 @@
+# Локальна self-hosted інфраструктура для розробки.
+# Жодних зовнішніх сервісів (Supabase/Clerk) — лише чистий Postgres та Redis.
+# Підняти:  docker compose up -d
+# Зупинити: docker compose down   (дані зберігаються у named volumes)
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: lifeos_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lifeos
+      POSTGRES_PASSWORD: lifeos
+      POSTGRES_DB: lifeos
+    ports:
+      - "5432:5432"
+    volumes:
+      - lifeos_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lifeos -d lifeos"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: lifeos_redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - lifeos_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  lifeos_pgdata:
+  lifeos_redisdata:

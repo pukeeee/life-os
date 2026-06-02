@@ -1,0 +1,271 @@
+﻿Архітектура та продуктова стратегія платформи Life OS: Комплексна екосистема продуктивності та поведінкової аналітики
+Ринок інструментів для управління особистою ефективністю у 2025–2026 роках перебуває у стані глибокої трансформації, переходячи від простих списків справ до складних аналітичних платформ, що базуються на об’єктивних даних. Оцінка світового ринку застосунків для відстеження звичок сягнула 1,9 мільярда доларів США у 2025 році з прогнозованим зростанням до 5,5 мільярда доларів до 2033 року при середньорічному темпі зростання (CAGR) на рівні 14,2%.1 Попри активне зростання, індустрія стикається з серйозними викликами: близько 47% користувачів видаляють застосунки протягом короткого періоду через надмірну складність інтерфейсів або перенасичення функціоналом, а 52% вже використовують кілька паралельних інструментів, що призводить до фрагментації даних.2 Концепція Life OS покликана вирішити ці проблеми шляхом створення єдиної точки збору та аналізу життєвих метрик, замінюючи розрізнені сервіси, такі як Daylio, TickTick та Notion, цілісним інструментом, де аналітика є фундаментальною складовою, а не додатковою функцією.
+1. Product Vision
+Фундаментальна ідея Life OS базується на парадигмі «Quantified Self» — прагненні до самопізнання через цифрові дані.3 У сучасному середовищі користувачі відчувають «втому від додатків» та «цифровий шум», що робить більшість традиційних інструментів продуктивності неефективними в довгостроковій перспективі. Проблема більшості існуючих рішень полягає у фокусі на миттєвому дофаміновому задоволенні від позначення завдання як виконаного, що не призводить до реальної зміни поведінки.4 Life OS пропонує перехід до моделі «Clarity over Streaks» (чіткість замість серій), де основна цінність полягає в розумінні причинно-наслідкових зв’язків між діями користувача та його станом.4
+Бізнес-аналіз показує, що користувачі все частіше шукають інструменти, які допомагають підтримувати баланс між роботою та особистим життям, особливо на фоні впровадження 4-денного робочого тижня та гнучких графіків.7 Life OS орієнтується на створення «другого мозку», який не просто нагадує про завдання, а допомагає ідентифікувати аномалії в поведінці, такі як кореляція між низькою якістю сну та зниженням продуктивності або вплив регулярності фізичних вправ на емоційний стан.8
+Критерій
+	Традиційні трекери
+	Платформа Life OS
+	Цільова метрика
+	Кількість виконаних завдань
+	Глибина та точність аналітичних інсайтів
+	Мотиваційна модель
+	Соціальний тиск та ігрові стріки
+	Об’єктивні дані та зміна ідентичності
+	Структура даних
+	Ізольовані таблиці
+	Подійно-орієнтована графова модель
+	Аналітичний рівень
+	Базова статистика (бари/паї)
+	Регресійний та кореляційний аналіз
+	Контекстуалізація
+	Відсутня
+	Врахування біологічних та зовнішніх факторів
+	Аналіз ринку свідчить про високу активність нових гравців: понад 30% рекламодавців у сегменті продуктивності є новачками, що вказує на постійне оновлення ринку та запит на інноваційні підходи.10 Проте успіх нового продукту в 2026 році залежить від здатності збалансувати простоту використання з потужним функціоналом, оскільки 44% користувачів шукають рішення без дистракцій.2 Life OS задовольняє цей запит через мінімалістичний дизайн та інтелектуальну агрегацію даних.
+2. User Scenarios
+Для проектування високонавантаженої системи необхідно розуміти сценарії використання, які охоплюють як щоденну рутину, так і стратегічне планування. Аналіз показує, що найбільш критичними є моменти, коли мотивація користувача знижується — саме в цей час більшість систем продуктивності «колапсують».4
+2.1. Сценарій «Відновлення після збою» (The Resilience Loop)
+Користувач переживає складний тиждень, пропускаючи більшість запланованих звичок та завдань. У типовому застосунку це призводить до скидання стріків і почуття провини, що часто стає причиною відмови від інструменту.11 У Life OS система ідентифікує пропуск не як «провал», а як «дані про контекст». Користувач отримує запит на фіксацію стану (наприклад, хвороба, стрес або надмірне навантаження). Система автоматично коригує аналітичні криві, використовуючи зважені середні, щоб зберегти цілісність довгострокового прогресу, не демотивуючи користувача.12
+2.2. Сценарій «Детектив продуктивності» (The Insight Hunter)
+Користувач помічає, що вівторки зазвичай є найменш продуктивними днями. Через модуль аналітики він виявляє, що в понеділок ввечері він часто затримується за переглядом медіа-контенту, що корелює зі зниженням якості сну на 15% та підвищенням рівня стресу вранці вівторка.9 Завдяки візуалізації кореляцій Life OS допомагає прийняти рішення про введення нової звички — «цифровий детокс після 22:00» — і відстежує її вплив на продуктивність наступного дня в реальному часі.
+2.3. Сценарій «Довгострокова перспектива» (The Life Navigator)
+Використовуючи візуалізацію життя на дистанції років («Grid of Life»), користувач бачить свою поточну позицію щодо глобальних цілей. Це дозволяє уникнути фокусу на дрібних невдачах і переключитися на формування «ідентичності», про яку писав Джеймс Клір.15 Користувач бачить не просто галочку в календарі, а зафарбований блок у великій картині свого десятиліття, що створює відчуття масштабу та значущості щоденних дій.
+Тип користувача
+	Основна потреба
+	Використовувані модулі
+	Експериментатор
+	Пошук оптимальних умов життя
+	Аналітика кореляцій, трекінг станів
+	Мінімаліст
+	Очищення розуму від завдань
+	Швидкий ввід, GTD-списки, архівування
+	Стратег
+	Довгострокове планування
+	Grid of Life, річна статистика, цілі
+	Початківець
+	Формування базової дисципліни
+	Трекінг звичок, контекстні нагадування
+	3. Domain Model (Core Entities)
+Для побудови масштабованої SaaS-платформи Life OS використовується schema-first підхід, де кожна сутність є частиною цілісної подійну-орієнтованої моделі.17 Це дозволяє не лише зберігати поточний стан, а й відтворювати історію змін для глибокої аналітики.
+3.1. User & Identity Context
+Користувач (User) є центром екосистеми. Окрім базових даних профілю, сутність включає «Identity Statements» — декларації про те, якою людиною користувач хоче стати. Це пов’язує абстрактні звички з психологічною основою самоідентифікації.15
+3.2. Metrics & Definitions (The Schema Layer)
+Metric Definition визначає, що саме відстежується. Це може бути бінарна звичка (так/ні), кількісний показник (літри води, кількість кроків) або шкала (рівень настрою від 1 до 10). Кожна метрика належить до певної категорії (здоров’я, робота, фінанси тощо) і має налаштування рекурентності та цільових значень.19
+3.3. Events & Entries (The Event Store)
+Кожен факт трекінгу — це Event. Це атомарний запис, що містить посилання на метрику, значення, часову мітку (з урахуванням часового поясу) та необов’язковий контекстуальний тег або коментар. Саме такий підхід дозволяє реалізувати гнучкі стріки та аналізувати дані за допомогою віконних функцій SQL.13
+3.4. Tasks & Projects (The Action Layer)
+Task (Завдання) відрізняється від звички своєю одноразовістю або терміном виконання. Завдання можуть групуватися в Projects. Важливою особливістю Life OS є можливість конвертації завдання у звичку, якщо воно стає регулярним, та автоматичний зв’язок виконання завдань із загальним трекінгом стану.
+3.5. Journals & States (The Narrative Layer)
+Journal Entry — це текстовий запис у щоденнику (Markdown). Він пов’язаний з Daily Summary — агрегованою сутністю, яка збирає всі події, стани та виконані завдання за певну добу. Це дозволяє проводити семантичний аналіз тексту та зіставляти його з кількісними показниками.16
+4. Database Architecture
+Архітектура бази даних базується на PostgreSQL (через Supabase), що забезпечує високу швидкість аналітичних запитів завдяки вбудованим математичним функціям та підтримці JSONB для неструктурованих метаданих.17
+4.1. Схема таблиць та зв'язків
+Таблиця
+	Опис
+	Тип зберігання
+	profiles
+	Дані користувача, часові пояси, налаштування біоритмів
+	Relational
+	metrics
+	Конфігурації звичок, шкал та числових показників
+	Relational
+	events
+	Атомарні записи трекінгу (Event Store)
+	Relational + Index
+	tasks
+	Завдання, статуси, пріоритети, дедлайни
+	Relational
+	journal_entries
+	Текстові записи щоденника,Markdown, Embeddings
+	Text + Vector
+	daily_aggregates
+	Матеріалізовані представлення для швидкої аналітики
+	Aggregated
+	sync_queue
+	Черга для offline-first синхронізації
+	JSONB
+	4.2. Принципи Event-Driven та Outbox Pattern
+Для забезпечення надійності системи та можливості майбутнього впровадження AI-агентів, кожна зміна стану бази даних супроводжується записом у лог подій. Ми використовуємо PostgreSQL Event Triggers для автоматичного забезпечення Row Level Security (RLS) при створенні нових таблиць або схем.17 Для синхронізації між бекендом та клієнтом реалізовано Outbox Pattern: подія спочатку фіксується в базі даних як «необроблена», а потім через механізм LISTEN/NOTIFY передається підписникам.17
+4.3. Оптимізація аналітичних запитів
+Для розрахунку складних метрик, таких як стріки з урахуванням «вихідних» або «лікарняних», використовуються віконні функції. Це дозволяє уникнути важких обчислень на стороні сервера додатків. Наприклад, для ідентифікації груп послідовних днів використовується техніка віднімання ROW_NUMBER() від дати події.13 Це забезпечує продуктивність рівня мілісекунд навіть при мільйонах записів у таблиці events.
+5. Functional Requirements
+Функціональні вимоги Life OS розроблені таким чином, щоб мінімізувати когнітивне навантаження на користувача (UX-friction), яке є причиною 47% відтоку в аналогічних сервісах.2
+5.1. Модуль гнучкого трекінгу (The Adaptive Tracker)
+* Підтримка різних типів даних: Платформа повинна дозволяти створення бінарних звичок, числових логів (вага, калорії, фінанси) та шкал (настрій, енергія).20
+* Контекстуальні логи: Користувач може додати коротку нотатку до кожного запису, щоб пояснити аномалію (наприклад, «не тренувався, бо був у дорозі»).
+* Часткові перемоги: Можливість відмітити виконання звички на певну частку (наприклад, 15 хвилин читання замість 30), що дозволяє зберігати стріки за принципом «Show up every day».11
+5.2. Розумне управління завданнями (Focus & Context)
+* Інтеграція з календарем: Візуалізація завдань у форматі Time Blocking.15
+* Пріоритезація за Ейзенхауером: Автоматичне групування завдань за важливістю та терміновістю.15
+* Context-Aware Recommendations: Система повинна пропонувати завдання на основі часу доби та поточного рівня енергії користувача (якщо він був зафіксований раніше).7
+5.3. Щоденник та семантичне зв'язування
+* Markdown Editor: Підтримка швидкого форматування та вставки медіа-файлів через Supabase Storage.
+* Backlinks: Можливість пов’язувати записи щоденника з конкретними завданнями або звичками для створення цілісного контексту.22
+* Daily Review System: Автоматичне генерування вечірнього опитування, яке збирає дані про прожитий день у напівавтоматичному режимі.15
+6. Analytics & Statistics
+Аналітичний модуль Life OS є його головною конкурентною перевагою, перетворюючи платформу з «трекера» на «інструмент аналізу».12
+6.1. Математичні методи аналізу
+Для пошуку кореляцій між різними аспектами життя ми використовуємо коефіцієнт кореляції Пірсона. Це дозволяє математично підтвердити або спростувати гіпотези користувача про його продуктивність.8
+
+
+  
+
+Де x — це, наприклад, кількість годин сну, а y — суб’єктивний рівень фокусу протягом дня. Система автоматично розраховує ці значення для всіх пар метрик, де накопичено достатньо даних.
+6.2. Згладжування даних та тренди
+Замість того, щоб показувати різкі коливання щоденних значень, Life OS використовує ковзні середні (Simple Moving Average - SMA та Exponential Moving Average - EMA).27 Це дозволяє бачити реальний прогрес, ігноруючи короткострокові флуктуації, спричинені випадковими факторами.
+
+
+Метод
+	Формула / Підхід
+	Призначення
+	SMA (7-day)
+	Середнє арифметичне останніх 7 точок
+	Згладжування щотижневих циклів 29
+	Habit Strength
+	Зважений показник частоти та регулярності
+	Оцінка стійкості звички понад стріки 12
+	Heatmaps
+	Агрегація за часом доби та днем тижня
+	Визначення піків продуктивності 30
+	Cohort Analysis
+	Групування звичок за часом початку
+	Аналіз «виживаності» нових патернів 31
+	6.3. Візуалізація життєвого шляху
+«Grid of Life» — це сітка тижнів на 80-90 років, де кожен квадрат представляє один тиждень життя. Користувач може бачити, які періоди були найбільш активними, як змінювалися пріоритети та скільки часу залишилося до стратегічних дедлайнів. Це створює екзистенційну перспективу, яка стимулює усвідомленість понад миттєві досягнення.15
+7. Sitemap & UX Structure
+UX-архітектура платформи побудована за принципом «Mobile-first, Desktop-optimized», враховуючи, що 70% взаємодій з інструментами продуктивності відбувається через мобільні пристрої.2
+7.1. Структура сторінок та модулів
+
+
+Рівень
+	Назва сторінки
+	Ключові компоненти
+	L1
+	Dashboard
+	North Star Metric, Today's Tasks, Quick-Log UI 34
+	L1
+	Focus Mode
+	Pomodoro Timer, Single Task View, Distraction Blocker 7
+	L1
+	Analytics Hub
+	Correlation Matrix, Trend Lines, Life Grid View 33
+	L1
+	Journal
+	Daily/Weekly Logs, Markdown Editor, Backlinks 22
+	L2
+	Habit Detail
+	Distribution charts, Completion heatmaps, Settings
+	L2
+	Project Board
+	Kanban view, Timeline/Gantt, Sub-task management
+	L2
+	Settings
+	Data Export, RLS Policies management, Integrations
+	7.2. Інформаційна ієрархія та F-патерн
+Інтерфейс дашборду використовує модифікований F-патерн: найважливіша метрика (North Star Metric) розташована у верхньому лівому куті, де її миттєво зчитує користувач.34 Глобальна навігація реалізована через бокову панель (sidebar), що дозволяє зручно масштабувати кількість модулів без перевантаження заголовка сторінки.34
+8. UI / UX Principles
+Дизайн Life OS у 2026 році базується на концепції «Calm Technology» — інтерфейс повинен бути непомітним, коли він не потрібен, і максимально інформативним у момент взаємодії.35
+* Прогресивне розкриття (Progressive Disclosure): Ми показуємо лише базові метрики на головному екрані. Складні графіки та детальні налаштування сховані за один-два кліки, щоб не перевантажувати нових користувачів.35
+* Висока щільність даних (Data Density): Для десктопної версії використовуються компактні віджети, що дозволяють бачити всю картину життя на одному екрані без скролінгу.34
+* Відсутність «Guilt Design»: Ми уникаємо червоних індикаторів для пропущених звичок. Замість цього використовуються нейтральні кольори та повідомлення, що фокусуються на аналізі причин, а не на засудженні.11
+* Accessibility як стандарт: Контрастні кольори, підтримка скрін-рідерів та можливість управління через гарячі клавіші роблять систему доступною для всіх категорій користувачів.33
+9. Technical Architecture
+Технологічний стек Life OS вибраний для забезпечення максимальної продуктивності, безпеки даних та можливості роботи в офлайн-режимі.
+9.1. Frontend: Next.js 15+ & React Server Components
+Ми використовуємо Next.js App Router для забезпечення швидкого початкового рендерингу (SSR) та покращення SEO. Server Components дозволяють виконувати важку логіку доступу до бази даних на стороні сервера, надсилаючи клієнту лише готовий HTML та мінімальний об’єм JavaScript.
+* Streaming & Suspense: Дозволяють завантажувати віджети дашборду асинхронно. Користувач бачить каркас сторінки та базові дані миттєво, поки складні аналітичні модулі підвантажуються фоном.33
+* State Management: Для глобального стану використовується Zustand, а для серверного кешування та синхронізації даних — React Query.37
+9.2. Offline-First та PWA
+Хоча PWA не є частиною MVP, архітектура закладається з першого дня. Ми використовуємо Service Workers для кешування статичних ресурсів та IndexedDB для зберігання черги змін (Sync Queue).37
+* Sync Logic: При зміні даних в офлайні, запис потрапляє в sync_queue. Після відновлення з’єднання Service Worker виконує реплей цих подій до Supabase API, забезпечуючи консистентність через ідемпотентні операції.37
+* Optimistic UI: Всі дії користувача відображаються миттєво в інтерфейсі, поки реальна синхронізація відбувається у фоновому режимі.
+9.3. Backend: Supabase & PostgreSQL
+Supabase надає потужний бекенд як сервіс, що дозволяє нам зосередитись на продуктовій логіці.
+* SQL Migrations: Всі зміни схеми відбуваються через міграції, що забезпечує відтворюваність середовищ розробки та продакшну.
+* PostgreSQL Functions & Triggers: Складна бізнес-логіка (наприклад, перерахунок щоденних агрегатів при додаванні нового евенту) винесена на рівень бази даних для забезпечення атомарності та продуктивності.40
+10. Security & Privacy
+Безпека персональних даних є критичною для Life OS, оскільки користувачі довіряють системі найбільш інтимну інформацію про свій стан та життя.2
+10.1. Row Level Security (RLS)
+Ми впроваджуємо суворі політики RLS для кожної таблиці. Це гарантує, що жоден запит не може отримати дані іншого користувача, навіть якщо в API є вразливість. Політика базується на auth.uid(), який автоматично перевіряється PostgreSQL при кожному запиті.42
+
+
+SQL
+
+
+
+
+-- Приклад політики для таблиці events
+CREATE POLICY "Користувачі можуть бачити лише власні події"
+ON public.events
+FOR SELECT
+USING (auth.uid() = user_id);
+
+10.2. Ізоляція даних та шифрування
+Всі медіа-файли в Supabase Storage зашифровані та доступні лише через підписані URL-адреси з коротким терміном дії. Ми також плануємо впровадження «Audit Logs» для відстеження всіх спроб доступу до чутливих даних.42
+10.3. Контроль доступу та API
+Нова модель API-ключів Supabase (2025-2026) дозволяє гнучко керувати правами доступу, розділяючи «publishable» ключі для фронтенду та «secret» ключі для внутрішніх сервісів з можливістю їх швидкої ротації у випадку витоку.24
+11. MVP Scope
+Для швидкого виходу на ринок ми фокусуємось на функціях, що створюють найбільшу цінність при мінімальних витратах на розробку.
+Включено до MVP:
+1. Core Tracking: Створення та логування до 10 кастомних метрик (бінарні, числові, шкали).
+2. Basic Dashboard: Візуалізація щоденного прогресу та активних стріків.
+3. Task Manager: Простий список завдань із пріоритезацією.
+4. Daily Journal: Базовий текстовий редактор для щоденних записів.
+5. Analytics Lite: Щотижневий звіт про виконання та графік настрою.
+6. Supabase Auth: Реєстрація через Email та Google.
+Відкладено (Post-MVP):
+1. PWA Offline Cache: Повна робота без інтернету.
+2. Advanced Analytics: Автоматичний розрахунок кореляцій Пірсона (потребує накопичення даних понад 30 днів).
+3. Integrations: Apple Health, Google Fit, Spotify API.
+4. AI Assistant: Аналіз тексту щоденника та прогнозування станів.
+12. Future Extensions
+Life OS має потенціал стати центральним хабом для «Personal AI» у майбутньому.7
+* AI-Powered Insights: Використання LLM для аналізу неструктурованих даних у щоденнику. Система зможе сказати: «Ти помітив, що кожного разу, коли ти пишеш про зустріч із [Ім'я], твій рівень стресу наступного дня зростає на 20%?».7
+* Predictive Health: На основі історичних даних та інтеграції з біосенсорами, система зможе прогнозувати вигорання за 3-5 днів до його настання, пропонуючи користувачу знизити навантаження.7
+* Digital Sovereignty: Впровадження децентралізованого зберігання даних або можливість локального хостингу бази даних для користувачів, які вимагають максимальної приватності.
+Висновки бізнес-аналізу показують, що успіх Life OS залежить від здатності перейти від «інструменту фіксації» до «інструменту трансформації».15 Надаючи користувачам об’єктивні дані замість ефемерної мотивації, ми створюємо продукт з високим рівнем утримання (retention) та реальним впливом на якість життя. Технологічний стек 2026 року забезпечує необхідну гнучкість для реалізації цього бачення, роблячи платформу готовою до майбутніх викликів у сфері персональної аналітики та штучного інтелекту.
+Works cited
+1. Habit Tracking Apps Market Size, Share, Growth & Trends Chart by 2033 - Straits Research, accessed January 21, 2026, https://straitsresearch.com/report/habit-tracking-apps-market
+2. To-do List Apps Market Size & Demand Analysis by 2035 - Global Growth Insights, accessed January 21, 2026, https://www.globalgrowthinsights.com/market-reports/to-do-list-apps-market-122376
+3. Quantified self - Wikipedia, accessed January 21, 2026, https://en.wikipedia.org/wiki/Quantified_self
+4. Why do all habit apps suck?? : r/getdisciplined - Reddit, accessed January 21, 2026, https://www.reddit.com/r/getdisciplined/comments/1oxzero/why_do_all_habit_apps_suck/
+5. I Built 3 Habit Tracking Apps and Studied Thousands of Users (here's what I learned), accessed January 21, 2026, https://www.reddit.com/r/ProductivityApps/comments/1ngpioc/i_built_3_habit_tracking_apps_and_studied/
+6. Are habit tracking apps really worth their price? : r/getdisciplined - Reddit, accessed January 21, 2026, https://www.reddit.com/r/getdisciplined/comments/1q56hay/are_habit_tracking_apps_really_worth_their_price/
+7. Phase's Top 5 Predictions for the evolution of productivity apps in ..., accessed January 21, 2026, https://www.phaseapp.io/blog/top-5-predictions-for-the-future-of-productivity-tools-in-2025
+8. The Pearson Correlation Coefficient Formula in SQL | Tutorial by Chartio, accessed January 21, 2026, https://chartio.com/learn/postgresql/correlation-coefficient-pearson/
+9. woop/awesome-quantified-self: :bar_chart: Websites, Resources, Devices, Wearables, Applications, and Platforms for Self Tracking - GitHub, accessed January 21, 2026, https://github.com/woop/awesome-quantified-self
+10. Productivity app marketing trends 2025 - Business of Apps, accessed January 21, 2026, https://www.businessofapps.com/insights/productivity-app-marketing-trends-2025/
+11. If you used a habit tracker recently, what annoyed you the most? : r/productivity - Reddit, accessed January 21, 2026, https://www.reddit.com/r/productivity/comments/1p8vnxo/if_you_used_a_habit_tracker_recently_what_annoyed/
+12. The Best Habit Tracker With Analytics - Charts, Data Analytics and AI | The 1% Improver, accessed January 21, 2026, https://pattrn.io/blog/the-best-habit-tracker-with-analytics-charts-data-analytics-and-ai
+13. Streak calculation in PostgreSQL - Peter Morgenstern, accessed January 21, 2026, https://www.petergundel.de/postgresql/2023/04/23/streak-calculation-in-postgresql.html
+14. Using the PostgreSQL Correlation Function | Tutorial by Chartio, accessed January 21, 2026, https://chartio.com/learn/postgresql/using-the-postgres-corr-function/
+15. The Life OS Dashboard, accessed January 21, 2026, https://www.lifeosdashboard.com/
+16. Life OS | All-in-one Productivity System Template by heyismail | Notion Marketplace, accessed January 21, 2026, https://www.notion.com/templates/life-os-all-in-one-productivity-system
+17. Postgres as Your Platform: Building Event-Driven Systems with ..., accessed January 21, 2026, https://neon.com/blog/postgres-as-your-platform
+18. Event-Driven Architectures and Databases: Can SQL Keep Up? - Rapydo, accessed January 21, 2026, https://www.rapydo.io/blog/event-driven-architectures-and-databases-can-sql-keep-up
+19. [PostgreSQL] Need help to structure my database for a habit tracker. : r/SQL - Reddit, accessed January 21, 2026, https://www.reddit.com/r/SQL/comments/7go4zf/postgresql_need_help_to_structure_my_database_for/
+20. Harnessing Change: The Power of the Streaks Habit Tracker App - Oreate AI Blog, accessed January 21, 2026, https://www.oreateai.com/blog/harnessing-change-the-power-of-the-streaks-habit-tracker-app/893ace4dc6aa1bf554d4a40cb8a72665
+21. Finding the Longest Streak with Postgresql // john-shiver-dev, accessed January 21, 2026, http://www.johnshiver.org/posts/finding-longest-streak-of-days-with-postgresql/
+22. This two-app note-taking setup is 10x more productive than a single app - XDA Developers, accessed January 21, 2026, https://www.xda-developers.com/this-two-app-note-taking-setup-is-10x-more-productive-than-a-single-app/
+23. PostgreSQL for Data Analysis: A Complete Guide - Domo, accessed January 21, 2026, https://www.domo.com/learn/article/postgresql-for-data-analysis-a-complete-guide
+24. Supabase Security Retro: 2025, accessed January 21, 2026, https://supabase.com/blog/supabase-security-2025-retro
+25. How safe is your quantified self? Tracking, monitoring, and wearable tech - Support Documents and Downloads, accessed January 21, 2026, https://docs.broadcom.com/docs/how-safe-is-your-quantified-self-en
+26. Notion Life OS: Your Complete Second Brain - Better Creating, accessed January 21, 2026, https://www.bettercreating.com/lifeos
+27. Compute Rolling Average in PostgreSQL - Redrock Postgres, accessed January 21, 2026, https://www.rockdata.net/blog/compute-rolling-average/
+28. Compute Moving Average in PostgreSQL - GeeksforGeeks, accessed January 21, 2026, https://www.geeksforgeeks.org/postgresql/compute-moving-average-in-postgresql/
+29. Rolling averages in MySQL and SQL server - Sisense, accessed January 21, 2026, https://www.sisense.com/blog/rolling-average/
+30. Effective Dashboard Design: Principles, Best Practices, and Examples - DataCamp, accessed January 21, 2026, https://www.datacamp.com/tutorial/dashboard-design-tutorial
+31. Mode advanced analytics: Next-level analysis, now for everyone, accessed January 21, 2026, https://mode.com/advanced-analytics/
+32. Best Journaling Templates from Notion | Notion Marketplace, accessed January 21, 2026, https://www.notion.com/templates/category/journaling
+33. Top Admin Dashboard Design Ideas for 2026, accessed January 21, 2026, https://www.fanruan.com/en/blog/top-admin-dashboard-design-ideas-inspiration
+34. The Anatomy of High-Performance SaaS Dashboard Design: 2026 Trends & Patterns, accessed January 21, 2026, https://www.saasframe.io/blog/the-anatomy-of-high-performance-saas-dashboard-design-2026-trends-patterns
+35. SaaS Dashboard Design: UX Best Practices and Trends, accessed January 21, 2026, https://codetheorem.co/blogs/saas-dashboard-ux/
+36. Dashboard UI Design Principles & Best Practices Guide 2026, accessed January 21, 2026, https://www.designstudiouiux.com/blog/dashboard-ui-design-guide/
+37. Building an Offline-First PWA Notes App with Next.js, IndexedDB ..., accessed January 21, 2026, https://oluwadaprof.medium.com/building-an-offline-first-pwa-notes-app-with-next-js-indexeddb-and-supabase-f861aa3a06f9
+38. Building Native-Like Offline Experience in Next.js PWAs | Fishtank, accessed January 21, 2026, https://www.getfishtank.com/insights/building-native-like-offline-experience-in-nextjs-pwas
+39. Build a Next.js 16 PWA with true offline support - LogRocket Blog, accessed January 21, 2026, https://blog.logrocket.com/nextjs-16-pwa-offline-support/
+40. PostgreSQL Row-level Triggers - DataCamp, accessed January 21, 2026, https://www.datacamp.com/doc/postgresql/row-level-triggers
+41. How to write a trigger in PostgreSQL - Tutorial - CYBERTEC, accessed January 21, 2026, https://www.cybertec-postgresql.com/en/postgresql-how-to-write-a-trigger/
+42. Authorization via Row Level Security | Supabase Features, accessed January 21, 2026, https://supabase.com/features/row-level-security
+43. Securing your API | Supabase Docs, accessed January 21, 2026, https://supabase.com/docs/guides/api/securing-your-api
+44. Enforcing Row Level Security in Supabase: A Deep Dive into LockIn's Multi-Tenant Architecture - DEV Community, accessed January 21, 2026, https://dev.to/blackie360/-enforcing-row-level-security-in-supabase-a-deep-dive-into-lockins-multi-tenant-architecture-4hd2
