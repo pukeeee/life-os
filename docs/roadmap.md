@@ -14,10 +14,12 @@
 - **Clerk і Supabase ще НЕ підключені** (свідомо, за планом — у кінці).
 
 **Архітектура** (детально в `docs/architecture.md`)
-- Backend: Clean Architecture + DDD у `src/server/` (`shared/kernel`, bounded contexts
-  `modules/{identity,tracking,analytics,tasks}`, `infrastructure/`, `container/`).
-- Frontend: FSD у `src/{shared,entities,features,widgets,views}`; Next-роутинг у `app/`
-  лише імпортує `views`. Межа FE↔BE — Server Actions у `features/*/api` з простими DTO.
+- Структура: `src/{app,components,lib,backend,frontend}` — Next роути в `src/app/`,
+  shadcn в `src/components` + `src/lib`. Backend: Clean Architecture + DDD у
+  `src/backend/` (`shared/kernel`, bounded contexts `modules/{identity,tracking,
+  analytics,tasks,journal,goals}`, `infrastructure/`, `container/`). Frontend: FSD у
+  `src/frontend/{shared,entities,features,widgets,views}`. Межа FE↔BE — Server Actions
+  у `features/*/api` з простими DTO.
 - Ports & Adapters: кожен репозиторій має `InMemory*` і `Drizzle*` реалізації; вибір
   у Composition Root за `env`.
 - EDD: подія `MetricLogged` → підписник перераховує стрік і інвалідує кеш інсайтів.

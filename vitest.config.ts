@@ -15,14 +15,13 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": r("./"),
-      "@server": r("./src/server"),
-      "@shared": r("./src/shared"),
-      "@entities": r("./src/entities"),
-      "@features": r("./src/features"),
-      "@widgets": r("./src/widgets"),
-      "@views": r("./src/views"),
-      "@fsd-app": r("./src/app"),
+      "@": r("./src"),
+      "@backend": r("./src/backend"),
+      "@shared": r("./src/frontend/shared"),
+      "@entities": r("./src/frontend/entities"),
+      "@features": r("./src/frontend/features"),
+      "@widgets": r("./src/frontend/widgets"),
+      "@views": r("./src/frontend/views"),
     },
   },
 });
