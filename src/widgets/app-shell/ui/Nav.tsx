@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { House, CheckCircle, ListChecks, ChartLineUp, type Icon } from "@phosphor-icons/react";
+import { House, CheckCircle, ListChecks, ChartLineUp, NotePencil, type Icon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 const ITEMS: { href: string; label: string; icon: Icon }[] = [
   { href: "/today", label: "Сьогодні", icon: House },
   { href: "/tasks", label: "Задачі", icon: CheckCircle },
+  { href: "/journal", label: "Журнал", icon: NotePencil },
   { href: "/trackers", label: "Трекери", icon: ListChecks },
   { href: "/insights", label: "Інсайти", icon: ChartLineUp },
 ];

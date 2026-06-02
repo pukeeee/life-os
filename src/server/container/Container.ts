@@ -53,6 +53,15 @@ import {
   type ITaskRepository,
 } from "@server/modules/tasks";
 
+import {
+  UpsertJournalEntry,
+  GetJournalEntry,
+  ListJournal,
+  InMemoryJournalRepository,
+  DrizzleJournalRepository,
+  type IJournalRepository,
+} from "@server/modules/journal";
+
 /**
  * Публічний контракт зібраного застосунку: лише use cases + конфіг.
  * Зовнішні шари (Server Actions) працюють виключно через ці сценарії — і ніколи
@@ -76,6 +85,9 @@ export interface AppContainer {
     readonly listTasks: ListTasks;
     readonly listTodayTasks: ListTodayTasks;
     readonly setTaskCompletion: SetTaskCompletion;
+    readonly upsertJournalEntry: UpsertJournalEntry;
+    readonly getJournalEntry: GetJournalEntry;
+    readonly listJournal: ListJournal;
   };
 }
 
@@ -94,6 +106,7 @@ function build(): AppContainer {
   let categories: ICategoryRepository;
   let streaks: IStreakRepository;
   let taskRepo: ITaskRepository;
+  let journalRepo: IJournalRepository;
 
   if (env.PERSISTENCE === "postgres") {
     const db = getDatabase(env.DATABASE_URL as string);
@@ -104,6 +117,7 @@ function build(): AppContainer {
     categories = new DrizzleCategoryRepository(db);
     streaks = new DrizzleStreakRepository(db);
     taskRepo = new DrizzleTaskRepository(db);
+    journalRepo = new DrizzleJournalRepository(db);
   } else {
     // Дефолт: усе в памʼяті — застосунок працює без БД та зовнішніх сервісів.
     users = new InMemoryUserRepository();
@@ -113,6 +127,7 @@ function build(): AppContainer {
     categories = new InMemoryCategoryRepository();
     streaks = new InMemoryStreakRepository();
     taskRepo = new InMemoryTaskRepository();
+    journalRepo = new InMemoryJournalRepository();
   }
 
   // Кеш: Redis у self-hosted режимі, інакше in-memory.
@@ -158,6 +173,9 @@ function build(): AppContainer {
       listTasks: new ListTasks(taskRepo),
       listTodayTasks: new ListTodayTasks(taskRepo),
       setTaskCompletion: new SetTaskCompletion(taskRepo),
+      upsertJournalEntry: new UpsertJournalEntry(journalRepo),
+      getJournalEntry: new GetJournalEntry(journalRepo),
+      listJournal: new ListJournal(journalRepo),
     },
   };
 }

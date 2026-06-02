@@ -31,12 +31,15 @@
   SeedStarterMetrics, CreateCategory, ListMetrics, ArchiveMetric, RecalculateStreak.
 - **Analytics**: `MovingAverage` (SMA/EMA), `Correlation` (Пірсон); GetMetricTrends,
   GetCorrelations (Redis-кеш через `ICacheStore` з версійною інвалідацією).
-- **Tasks**: `Task` (+`Priority`); CreateTask, ListTasks, SetTaskCompletion.
-- Екрани: `/today` (quick-log метрик доби), `/tasks`, `/trackers` (CRUD метрик+категорії,
+- **Tasks**: `Task` (+`Priority`); CreateTask, ListTasks, **ListTodayTasks** (overdue + due today),
+  SetTaskCompletion.
+- **Journal**: `JournalEntry` (one-per-day, Markdown); UpsertJournalEntry, GetJournalEntry, ListJournal.
+- Екрани: `/today` (дашборд доби — прогрес-хедер, mood hero, журнал дня, метрики, задачі),
+  `/tasks`, `/journal` (Markdown-щоденник з autosave + історія), `/trackers` (CRUD метрик+категорії,
   архів), `/insights` (кореляції + тренди-спарклайни). Навігація — `widgets/app-shell`.
 
-**Якість**: typecheck ✓ · 33 unit-тести (Vitest) ✓ · lint ✓ · `next build` ✓ ·
-7 таблиць, міграції `drizzle/0000..0002`.
+**Якість**: typecheck ✓ · 41 unit-тест (Vitest) ✓ · lint ✓ · `next build` ✓ ·
+8 таблиць, міграції `drizzle/0000..0003`.
 
 **Команди**: `npm run dev | test | typecheck | lint | build | db:generate | db:migrate | db:seed`
 
@@ -44,25 +47,24 @@
 
 ## 🟡 Що залишилось (за пріоритетом)
 
-### 1. Збагатити екран Today — «один екран, весь день» (S–M)
-Зараз `/today` показує лише метрики. Додати на нього секції:
-- **Задачі на сьогодні** (overdue + due today) — нова дія в `tasks` (напр.
-  `ListTodayTasks({userId,date})`) або фільтр на клієнті; віджет на Today.
-- **Настрій** — це вже метрика (`scale`), просто винести акцентом.
-- **Журнал дня** — після реалізації контексту Journal (п.2).
-- Прогрес-хедер: виконано задач/метрик.
-- Патерн: новий `widget` + composition у `views/today`, дані через існуючі/нові server actions.
+### ✅ ~~1. Збагатити екран Today~~ — зроблено
+Дашборд доби: прогрес-хедер метрик, mood hero (виносить «Настрій» окремо),
+журнал дня (інлайн редактор), список метрик, задачі на сьогодні з badge
+«Прострочено». Backend: новий use case `ListTodayTasks` (overdue + due today).
+Журнальна секція додалась на Today після реалізації п.2.
 
-### 2. Контекст **Journal / Notes** (M) — «другий мозок»
-- Домен: агрегат `JournalEntry` (userId, `date` або вільна нотатка, content Markdown,
-  createdAt/updatedAt). Окремо `Note` + `note_links` (backlinks) — можна почати з
-  щоденного запису (один на добу), backlinks — пост-MVP.
-- Порт `IJournalRepository` + InMemory/Drizzle + таблиця `journal_entries`
-  (UNIQUE (user_id, date) для one-per-day).
-- Use cases: `UpsertJournalEntry`, `GetJournalEntry({userId,date})`, `ListJournal`.
-- FSD: `entities/journal`, `features/edit-journal` (Markdown textarea + autosave),
-  `widgets`, `views/journal` + маршрут `/journal` + пункт навігації.
-- Інтеграція: показати/редагувати запис дня на Today.
+### ✅ ~~2. Контекст Journal / Notes~~ — зроблено
+- Агрегат `JournalEntry` (userId, date, content Markdown, createdAt/updatedAt);
+  one-per-day гарантується унікальним індексом `(user_id, date)` в `journal_entries`
+  (міграція `drizzle/0003`).
+- Use cases: `UpsertJournalEntry`, `GetJournalEntry`, `ListJournal`; обидва адаптери
+  (InMemory + Drizzle).
+- Frontend: `react-markdown` + `remark-gfm`; `features/edit-journal` (editor з
+  debounced autosave 1.5s через `useTransition` + перемикач Edit/Preview),
+  `widgets/today-journal`, `widgets/journal-list`, `views/journal` + маршрут
+  `/journal` + пункт меню.
+- Інтеграція: запис дня редагується інлайн на `/today` між mood hero і трекерами.
+- Backlinks / окремі вільні нотатки — поза MVP, повернемось пізніше.
 
 ### 3. Контекст **Goals** + Grid of Life (M–L)
 - Домен: `Goal` з ієрархією (`parentId`, `level`: life/year/quarter/month/week),
