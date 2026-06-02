@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, date, uniqueIndex } from "drizzle-orm/pg-core";
 
 /**
  * Таблиця користувачів. Навмисно без полів Clerk/Supabase — ідентичність
@@ -12,6 +12,7 @@ export const users = pgTable(
     email: text("email").notNull(),
     displayName: text("display_name"),
     timezone: text("timezone").notNull().default("UTC"),
+    birthDate: date("birth_date", { mode: "string" }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),

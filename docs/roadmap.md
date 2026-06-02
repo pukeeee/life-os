@@ -34,12 +34,16 @@
 - **Tasks**: `Task` (+`Priority`); CreateTask, ListTasks, **ListTodayTasks** (overdue + due today),
   SetTaskCompletion.
 - **Journal**: `JournalEntry` (one-per-day, Markdown); UpsertJournalEntry, GetJournalEntry, ListJournal.
+- **Goals**: `Goal` (+`GoalLevel` VO: life/year/quarter/month/week, ієрархія через `parentId`,
+  `progress 0..1`, `targetDate`, архівація); CreateGoal, ListGoalsTree, UpdateGoalProgress, ArchiveGoal.
+- **Identity (профіль)**: опціональне поле `birthDate` у `User`; use case `SetUserBirthDate`.
 - Екрани: `/today` (дашборд доби — прогрес-хедер, mood hero, журнал дня, метрики, задачі),
-  `/tasks`, `/journal` (Markdown-щоденник з autosave + історія), `/trackers` (CRUD метрик+категорії,
-  архів), `/insights` (кореляції + тренди-спарклайни). Навігація — `widgets/app-shell`.
+  `/tasks`, `/journal` (Markdown-щоденник з autosave + історія), `/goals` (дерево цілей + Grid of Life
+  + перемикач рівня), `/onboarding` (форма birthDate), `/trackers` (CRUD метрик+категорії, архів),
+  `/insights` (кореляції + тренди-спарклайни). Навігація — `widgets/app-shell`.
 
-**Якість**: typecheck ✓ · 41 unit-тест (Vitest) ✓ · lint ✓ · `next build` ✓ ·
-8 таблиць, міграції `drizzle/0000..0003`.
+**Якість**: typecheck ✓ · 46 unit-тестів (Vitest) ✓ · lint ✓ · `next build` ✓ ·
+9 таблиць, міграції `drizzle/0000..0004`.
 
 **Команди**: `npm run dev | test | typecheck | lint | build | db:generate | db:migrate | db:seed`
 
@@ -66,14 +70,19 @@
 - Інтеграція: запис дня редагується інлайн на `/today` між mood hero і трекерами.
 - Backlinks / окремі вільні нотатки — поза MVP, повернемось пізніше.
 
-### 3. Контекст **Goals** + Grid of Life (M–L)
-- Домен: `Goal` з ієрархією (`parentId`, `level`: life/year/quarter/month/week),
-  `targetDate`, прогрес (derived або ручний), лінки на метрики/задачі.
-- Порт `IGoalRepository` + адаптери + таблиця `goals`.
-- Use cases: CreateGoal, ListGoals (дерево), UpdateGoalProgress, LinkMetric/LinkTask.
-- FSD: `views/goals` (segment Рік/Місяць/Тиждень), прогрес-бари, зв'язки.
-- **Grid of Life**: окремий віджет (сітка тижнів життя) — потребує дату народження в
-  профілі (додати `birthDate` у `User`/preferences).
+### ✅ ~~3. Контекст Goals + Grid of Life~~ — зроблено
+- Агрегат `Goal` з `GoalLevel` VO (life/year/quarter/month/week), ієрархія через `parentId`,
+  `progress 0..1`, `targetDate`, архівація; обидва адаптери репозиторію (InMemory + Drizzle).
+- Use cases: `CreateGoal`, `ListGoalsTree` (плоский query → дерево в application), `UpdateGoalProgress`,
+  `ArchiveGoal`. `LinkMetric/LinkTask` — свідомо поза MVP (пост-MVP, коли стане потреба).
+- Identity: опціональне поле `User.birthDate` (YYYY-MM-DD) + use case `SetUserBirthDate`;
+  міграція додає колонку `users.birth_date`.
+- FSD: `entities/goal`, `features/manage-goals` (CRUD + повзунок прогресу + архівація),
+  `features/onboarding-profile`, `widgets/goals-tree` (рекурсивне дерево), `widgets/grid-of-life`
+  (CSS-grid 52 × 90 років), `widgets/level-segment` (перемикач через `?level=`),
+  `views/goals`, `views/onboarding`, маршрути `/goals` і `/onboarding`, пункт «Цілі» в Nav.
+- Онбординг: окрема сторінка `/onboarding` — якщо `birthDate` уже задана, редирект на `/today`;
+  інакше форма-дата → редирект.
 
 ### 4. Покращення **Insights** (S–M)
 - Перемикач періоду 7/30/90 (клієнтський компонент → викликає `getInsights(days)`),

@@ -13,7 +13,13 @@ export class UserMapper {
     const email = Email.create(row.email).getValue();
     const timezone = Timezone.create(row.timezone).getValue();
     return User.create(
-      { email, displayName: row.displayName, timezone, createdAt: row.createdAt },
+      {
+        email,
+        displayName: row.displayName,
+        timezone,
+        birthDate: row.birthDate,
+        createdAt: row.createdAt,
+      },
       new UniqueEntityID(row.id),
     ).getValue();
   }
@@ -24,6 +30,7 @@ export class UserMapper {
       email: user.email.value,
       displayName: user.displayName,
       timezone: user.timezone.value,
+      birthDate: user.birthDate,
       createdAt: user.createdAt,
       updatedAt: new Date(),
     };

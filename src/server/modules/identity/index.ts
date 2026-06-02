@@ -12,6 +12,8 @@ export { UserRegistered } from "./domain/events/UserRegistered";
 
 // Application
 export { EnsureCurrentUser } from "./application/use-cases/ensure-current-user/EnsureCurrentUser";
+export { SetUserBirthDate, UserNotFoundError } from "./application/use-cases/set-user-birth-date/SetUserBirthDate";
+export type { SetUserBirthDateRequest } from "./application/use-cases/set-user-birth-date/SetUserBirthDate";
 export type {
   ICurrentUserProvider,
   CurrentUserContext,

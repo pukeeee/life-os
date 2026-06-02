@@ -9,11 +9,22 @@ import { GetMetricTrends, GetCorrelations } from "@server/modules/analytics";
 
 import {
   EnsureCurrentUser,
+  SetUserBirthDate,
   DevCurrentUserProvider,
   InMemoryUserRepository,
   DrizzleUserRepository,
   type IUserRepository,
 } from "@server/modules/identity";
+
+import {
+  CreateGoal,
+  ListGoalsTree,
+  UpdateGoalProgress,
+  ArchiveGoal,
+  InMemoryGoalRepository,
+  DrizzleGoalRepository,
+  type IGoalRepository,
+} from "@server/modules/goals";
 
 import {
   DefineMetric,
@@ -88,6 +99,11 @@ export interface AppContainer {
     readonly upsertJournalEntry: UpsertJournalEntry;
     readonly getJournalEntry: GetJournalEntry;
     readonly listJournal: ListJournal;
+    readonly setUserBirthDate: SetUserBirthDate;
+    readonly createGoal: CreateGoal;
+    readonly listGoalsTree: ListGoalsTree;
+    readonly updateGoalProgress: UpdateGoalProgress;
+    readonly archiveGoal: ArchiveGoal;
   };
 }
 
@@ -107,6 +123,7 @@ function build(): AppContainer {
   let streaks: IStreakRepository;
   let taskRepo: ITaskRepository;
   let journalRepo: IJournalRepository;
+  let goalRepo: IGoalRepository;
 
   if (env.PERSISTENCE === "postgres") {
     const db = getDatabase(env.DATABASE_URL as string);
@@ -118,6 +135,7 @@ function build(): AppContainer {
     streaks = new DrizzleStreakRepository(db);
     taskRepo = new DrizzleTaskRepository(db);
     journalRepo = new DrizzleJournalRepository(db);
+    goalRepo = new DrizzleGoalRepository(db);
   } else {
     // Дефолт: усе в памʼяті — застосунок працює без БД та зовнішніх сервісів.
     users = new InMemoryUserRepository();
@@ -128,6 +146,7 @@ function build(): AppContainer {
     streaks = new InMemoryStreakRepository();
     taskRepo = new InMemoryTaskRepository();
     journalRepo = new InMemoryJournalRepository();
+    goalRepo = new InMemoryGoalRepository();
   }
 
   // Кеш: Redis у self-hosted режимі, інакше in-memory.
@@ -176,6 +195,11 @@ function build(): AppContainer {
       upsertJournalEntry: new UpsertJournalEntry(journalRepo),
       getJournalEntry: new GetJournalEntry(journalRepo),
       listJournal: new ListJournal(journalRepo),
+      setUserBirthDate: new SetUserBirthDate(users),
+      createGoal: new CreateGoal(goalRepo),
+      listGoalsTree: new ListGoalsTree(goalRepo),
+      updateGoalProgress: new UpdateGoalProgress(goalRepo),
+      archiveGoal: new ArchiveGoal(goalRepo),
     },
   };
 }

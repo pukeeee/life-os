@@ -7,6 +7,8 @@ interface UserProps {
   email: Email;
   displayName: string | null;
   timezone: Timezone;
+  /** Дата народження "YYYY-MM-DD" або null. Заповнюється на онбордингу. */
+  birthDate: string | null;
   createdAt: Date;
 }
 
@@ -15,6 +17,7 @@ export interface CreateUserProps {
   email: Email;
   displayName?: string | null;
   timezone?: Timezone;
+  birthDate?: string | null;
   createdAt?: Date;
 }
 
@@ -25,6 +28,7 @@ export interface CreateUserProps {
  */
 export class User extends AggregateRoot<UserProps> {
   private static readonly MAX_DISPLAY_NAME = 100;
+  private static readonly DATE_FORMAT = /^\d{4}-\d{2}-\d{2}$/;
 
   public get email(): Email {
     return this.props.email;
@@ -36,6 +40,10 @@ export class User extends AggregateRoot<UserProps> {
 
   public get timezone(): Timezone {
     return this.props.timezone;
+  }
+
+  public get birthDate(): string | null {
+    return this.props.birthDate;
   }
 
   public get createdAt(): Date {
@@ -57,12 +65,17 @@ export class User extends AggregateRoot<UserProps> {
       if (nameGuard.isFailure) return Result.fail(nameGuard.getError());
     }
 
+    if (props.birthDate && !this.DATE_FORMAT.test(props.birthDate)) {
+      return Result.fail("birthDate мусить мати формат YYYY-MM-DD.");
+    }
+
     const isNewUser = id === undefined;
     const user = new User(
       {
         email: props.email,
         displayName,
         timezone: props.timezone ?? Timezone.create(Timezone.DEFAULT).getValue(),
+        birthDate: props.birthDate ?? null,
         createdAt: props.createdAt ?? new Date(),
       },
       id,
@@ -77,6 +90,14 @@ export class User extends AggregateRoot<UserProps> {
   /** Зміна таймзони (приклад інкапсульованої доменної поведінки). */
   public changeTimezone(timezone: Timezone): void {
     this.props.timezone = timezone;
+  }
+
+  public setBirthDate(birthDate: string | null): Result<void> {
+    if (birthDate !== null && !User.DATE_FORMAT.test(birthDate)) {
+      return Result.fail("birthDate мусить мати формат YYYY-MM-DD.");
+    }
+    this.props.birthDate = birthDate;
+    return Result.ok();
   }
 
   public rename(displayName: string | null): Result<void> {
